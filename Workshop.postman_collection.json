@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "5e2830c9-c74c-408f-a0b4-0f9e07a51732",
+		"name": "Workshop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OrdersAPI",
+			"item": [
+				{
+					"name": "CreateOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"header\" : {\n        \"customerDetails\" : {\n            \"customerName\" : \"John Doe\",\n            \"telephoneNumber\" : \"999-111-9999\" \n        },\n        \"storeId\": \"STORE-US-1\",\n        \"orderType\" : \"GENERAL_SALES\"\n    },\n    \"lineItems\" : [\n        {\n            \"productNumber\": \"JAN1213\",\n            \"quantity\": 10\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderByNumber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/api/orders/ORD-1655604742951",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders",
+								"ORD-1655604742951"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrdersByStoreId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/api/orders/stores/STORE-US-1",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders",
+								"stores",
+								"STORE-US-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateOrderById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ORDER_PROCESSED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/api/orders/ORD-1655604742951",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"orders",
+								"ORD-1655604742951"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
