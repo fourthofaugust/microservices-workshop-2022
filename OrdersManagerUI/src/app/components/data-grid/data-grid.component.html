@@ -1,0 +1,15 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th *ngFor="let header of columnHeaders">{{ header }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let order of data">
+    <td> {{order.header.orderNumber}} </td>
+    <td> {{order.lineItems[0].productNumber}} </td>
+    <td> {{order.lineItems[0].quantity}} </td>
+    <td> {{order.header.status}} </td>
+  </tr>
+  </tbody>
+</table>
