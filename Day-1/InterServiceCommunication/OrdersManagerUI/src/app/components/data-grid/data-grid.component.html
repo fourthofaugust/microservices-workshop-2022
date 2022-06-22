@@ -6,10 +6,11 @@
   </thead>
   <tbody>
   <tr *ngFor="let order of data">
-    <td> {{order.header.orderNumber}} </td>
-    <td> {{order.lineItems[0].productNumber}} </td>
-    <td> {{order.lineItems[0].quantity}} </td>
-    <td> {{order.header.status}} </td>
+    <td> {{order.inventoryId || order.header.orderNumber}} </td>
+    <td> {{order.productId || order.lineItems[0].productNumber}} </td>
+    <td> {{order.quantity || order.lineItems[0].quantity}} </td>
+    <td> {{order.status || order.header.status}} </td>
+    <td> {{order?.price || order?.header?.price || 'N/A'}} </td>
   </tr>
   </tbody>
 </table>

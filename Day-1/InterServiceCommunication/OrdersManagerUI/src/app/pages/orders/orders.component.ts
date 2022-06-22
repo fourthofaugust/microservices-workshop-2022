@@ -12,8 +12,10 @@ export class OrdersComponent implements OnInit {
     "Order Number",
     "Product Number",
     "Quantity",
-    "Status"
-  ]
+    "Status",
+    "Price"
+  ];
+
   totalOrders: any[] = [];
 
   constructor(private ordersService: OrdersService) { }
