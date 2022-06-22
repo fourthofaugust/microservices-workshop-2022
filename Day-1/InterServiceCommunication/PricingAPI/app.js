@@ -34,12 +34,12 @@ const prices = [
 app.get("/api/pricing/:productId", (req, res) => {
     let retVal;
     const productId = req.params.productId;
-    retVal = prices.find(val => val.productId === productId || {});
+    retVal = prices.filter(val => val.productId === productId)[0];
     res.json(retVal)
 });
 
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3003;
 
 app.listen(PORT, () => {
     console.log(`Running on PORT ${PORT}`);

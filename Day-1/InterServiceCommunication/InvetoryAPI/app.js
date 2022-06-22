@@ -11,10 +11,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Retrieve
-// app.get("/api/inventory/:productNumber", (req, res) => {
-//   res.send("Get an order by orderNumber");
-// });
+
 
 app.get("/api/inventory/getAllInventory", (req, res) => {
     const db = dbo.getDb();
@@ -26,6 +23,22 @@ app.get("/api/inventory/getAllInventory", (req, res) => {
             } else {
                 // res.json({ metaData: { count: result.length}, results: result});
                 res.json(result);
+            }
+        });
+});
+
+
+// Retrieve
+app.get("/api/inventory/:productId", (req, res) => {
+    const db = dbo.getDb();
+    db.collection(process.env.DB_COLLECTION)
+        .find({"productId": req.params.productId}).limit(1)
+        .toArray(function (err, result) {
+            if (err) {
+                res.status(400).send("Error fetching inventory");
+            } else {
+                // res.json({ metaData: { count: result.length}, results: result});
+                res.json(result[0]);
             }
         });
 });

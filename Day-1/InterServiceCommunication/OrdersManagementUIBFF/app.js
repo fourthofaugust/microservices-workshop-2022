@@ -1,67 +1,34 @@
 import 'dotenv/config'
 import express from "express";
 import cors from "cors";
-import * as dbo from "./connection.js";
+import fetch from "node-fetch";
+
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN
+    origin: process.env.CORS_ORIGIN
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 // Retrieve
-// app.get("/api/inventory/:productNumber", (req, res) => {
-//   res.send("Get an order by orderNumber");
-// });
+app.get("/api/om-bff/:productId", async (req, res) => {
 
-app.get("/api/inventory/getAllInventory", (req, res) => {
-    const db = dbo.getDb();
-    db.collection(process.env.DB_COLLECTION)
-        .find().limit(50)
-        .toArray(function (err, result) {
-            if (err) {
-                res.status(400).send("Error fetching inventory");
-            } else {
-                // res.json({ metaData: { count: result.length}, results: result});
-                res.json(result);
-            }
-        });
+    const productId = req.params.productId;
+    let invRes = await fetch(process.env.INV_API + productId);
+    const invData = await invRes.json();
+
+    let pricingRes = await fetch(process.env.PRICING_API + productId);
+    const pricingData = await pricingRes.json();
+
+    const finalResponse = {...invData, price: pricingData.price}
+
+    res.json(finalResponse)
 });
 
-// Create
-app.post("/api/inventory", (req, res) => {
-  const dbConnect = dbo.getDb();
-  const inventoryId = `INV-${Date.now()}`
-  const inventoryPayload = {...req.body, inventoryId};
+const PORT = 3004;
 
-  dbConnect
-      .collection(process.env.DB_COLLECTION)
-      .insertOne(inventoryPayload, (err, result) => {
-        if (err) {
-          res.status(400).send({status: "Error adding an item to the inventory"});
-        }
-        console.log(`Added an item with id: ${result.insertedId}`);
-        res.status(202).send({status: "ITEM_ADDED"});
-      });
-
-});
-
-// Update
-app.put("/api/inventory/:productNumber", (req, res) => {
-  res.send("Update an order");
-});
-
-const PORT = 3002;
-
-dbo.connectToServer(function (err) {
-    if (err) {
-        console.error(`Error setting up DB connection :: ${err}`);
-        process.exit();
-    }
-    // start the Express server
-    app.listen(Number(process.env.PORT), () => {
-        console.log(`Server is running on port: ${process.env.PORT}`);
-    });
+app.listen(Number(process.env.PORT), () => {
+    console.log(`Server is running on port: ${process.env.PORT}`);
 });
