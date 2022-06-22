@@ -34,7 +34,7 @@ const prices = [
 app.get("/api/pricing/:productId", (req, res) => {
     let retVal;
     const productId = req.params.productId;
-    retVal = prices.find(val => val.productId === productId);
+    retVal = prices.find(val => val.productId === productId || {});
     res.json(retVal)
 });
 
