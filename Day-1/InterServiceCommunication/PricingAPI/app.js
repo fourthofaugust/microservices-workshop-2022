@@ -13,19 +13,19 @@ app.use(express.urlencoded({extended: true}));
 
 const prices = [
     {
-        "productId": "",
+        "productId": "ABC1234",
         "price": 24.0
     },
     {
-        "productId": "",
+        "productId": "ABC1235",
         "price": 14.0
     },
     {
-        "productId": "",
+        "productId": "ABC1236",
         "price": 12.0
     },
     {
-        "productId": "",
+        "productId": "ABC1239",
         "price": 300.0
     },
 ]
