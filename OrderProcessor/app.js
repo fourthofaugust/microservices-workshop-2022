@@ -1,4 +1,4 @@
-const { delay, ServiceBusClient, ServiceBusMessage } = require("@azure/service-bus");
+const { delay, ServiceBusClient } = require("@azure/service-bus");
 
 // connection string to your Service Bus namespace
 const connectionString = "Endpoint=sb://mssworkshop2022.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=pNBD1DNjkohHiX4I156u12Vks4BVyS3Z6SRip8+pkoE="
@@ -16,7 +16,7 @@ async function main() {
 
     // function to handle messages
     const myMessageHandler = async (messageReceived) => {
-        console.log(`Received message: ${messageReceived.body}`);
+        console.log(messageReceived.body);
 
         //TODO Process the order
     };

@@ -10,6 +10,4 @@ a list of applications that need to be installed on attendee machines
 - Node.js v18
 - Postman
 
-## Resources
-
 

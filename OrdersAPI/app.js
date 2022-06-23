@@ -13,6 +13,42 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+const connectionString = "Endpoint=sb://mssworkshop2022.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=pNBD1DNjkohHiX4I156u12Vks4BVyS3Z6SRip8+pkoE="
+const queueName = "ordersqueue"
+
+
+const postMessage = async (messages) => {
+    const sbClient = new ServiceBusClient(connectionString);
+    const sender = sbClient.createSender(queueName);
+
+    try {
+        let batch = await sender.createMessageBatch();
+
+
+        for (let i = 0; i < messages.length; i++) {
+
+            if (!batch.tryAddMessage(messages[i])) {
+                await sender.sendMessages(batch);
+
+                batch = await sender.createMessageBatch();
+
+                if (!batch.tryAddMessage(messages[i])) {
+                    throw new Error("Message too big to fit in a batch");
+                }
+            }
+        }
+
+        await sender.sendMessages(batch);
+
+        console.log(`Sent a batch of messages to the queue: ${queueName}`);
+        await sender.close();
+    } catch(e) {
+        console.log(`Error reading `, e);
+        await sbClient.close();
+    }
+
+};
+
 
 // Retrieve
 app.get("/api/orders/:orderNumber", (req, res) => {
@@ -54,10 +90,11 @@ app.post("/api/orders", (req, res) => {
 
     dbConnect
         .collection(process.env.DB_COLLECTION)
-        .insertOne(orderPayload, (err, result) => {
+        .insertOne(orderPayload, async (err, result) => {
             if (err) {
                 res.status(400).send({status: "Error submitting an order"});
             }
+            await postMessage([{body: orderPayload}]);
             console.log(`Submitted an order with id: ${result.insertedId}`);
             res.status(202).send({status: "ORDER_RECEIVED"});
         });
